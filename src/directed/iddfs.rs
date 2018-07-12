@@ -103,20 +103,14 @@ where
         let mut best_result = Path::Impossible;
 
         for n in neighbours_it {
-            let mut still_possible_from_this_node = !path.contains(&n);
-
-            if still_possible_from_this_node {
+            if !path.contains(&n) {
                 path.push(n);
                 match step(path, neighbours, success, depth - 1) {
                     Path::FoundOne => return Path::FoundOne,
-                    Path::NoneAtThisDepth => (),
-                    Path::Impossible => still_possible_from_this_node = false,
+                    Path::NoneAtThisDepth => best_result = Path::NoneAtThisDepth,
+                    Path::Impossible => (),
                 }
                 path.pop();
-            }
-
-            if still_possible_from_this_node {
-                best_result = Path::NoneAtThisDepth;
             }
         }
         
