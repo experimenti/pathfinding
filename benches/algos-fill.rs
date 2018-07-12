@@ -6,7 +6,7 @@
 extern crate pathfinding;
 extern crate test;
 
-use pathfinding::prelude::{astar, bfs, dfs, dijkstra, fringe, idastar};
+use pathfinding::prelude::{astar, bfs, dfs, iddfs, dijkstra, fringe, idastar};
 use test::Bencher;
 
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
@@ -90,6 +90,21 @@ fn corner_to_corner_dfs(b: &mut Bencher) {
 }
 
 #[bench]
+#[ignore] // It's very slow because we look up repeated states
+fn corner_to_corner_iddfs(b: &mut Bencher) {
+    b.iter(|| {
+        assert_ne!(
+            iddfs(
+                Pt::new(0, 0),
+                |n| neighbours(n),
+                |n| n.x == 64 && n.y == 64,
+            ),
+            None
+        )
+    })
+}
+
+#[bench]
 fn corner_to_corner_dijkstra(b: &mut Bencher) {
     b.iter(|| {
         assert_ne!(
@@ -151,6 +166,12 @@ fn no_path_astar(b: &mut Bencher) {
 #[bench]
 fn no_path_bfs(b: &mut Bencher) {
     b.iter(|| assert_eq!(bfs(&Pt::new(2, 3), |n| neighbours(n), |_| false), None));
+}
+
+#[bench]
+#[ignore] // It's slower than DFS at realizing that there are no solutions
+fn no_path_iddfs(b: &mut Bencher) {
+    b.iter(|| assert_eq!(iddfs(Pt::new(2, 3), |n| neighbours(n), |_| false), None));
 }
 
 #[bench]
