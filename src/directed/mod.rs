@@ -3,6 +3,7 @@
 pub mod astar;
 pub mod bfs;
 pub mod dfs;
+pub mod iddfs;
 pub mod dijkstra;
 pub mod edmonds_karp;
 pub mod fringe;

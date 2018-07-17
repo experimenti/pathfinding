@@ -19,6 +19,7 @@ pub mod prelude {
     pub use directed::astar::*;
     pub use directed::bfs::*;
     pub use directed::dfs::*;
+    pub use directed::iddfs::*;
     pub use directed::dijkstra::*;
     pub use directed::edmonds_karp::*;
     pub use directed::fringe::*;
